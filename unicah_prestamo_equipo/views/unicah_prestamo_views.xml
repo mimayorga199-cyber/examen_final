@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="unicah_prestamo_view_list" model="ir.ui.view">
+        <field name="name">unicah.prestamo.list</field>
+        <field name="model">unicah.prestamo</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="dias_retraso &gt; 0 and state == 'prestado'"
+                  decoration-muted="state == 'devuelto'">
+                <field name="name"/>
+                <field name="equipo_id"/>
+                <field name="partner_id"/>
+                <field name="fecha_prestamo"/>
+                <field name="fecha_prevista"/>
+                <field name="dias_retraso"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="unicah_prestamo_view_form" model="ir.ui.view">
+        <field name="name">unicah.prestamo.form</field>
+        <field name="model">unicah.prestamo</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_entregar" string="Entregar equipo"
+                            type="object" class="btn-primary"
+                            invisible="state != 'borrador'"/>
+                    <button name="action_devolver" string="Registrar devolución"
+                            type="object" class="btn-primary"
+                            invisible="state != 'prestado'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="borrador,prestado,devuelto"/>
+                </header>
+                <sheet>
+                    <h1><field name="name"/></h1>
+                    <group>
+                        <group>
+                            <field name="equipo_id" readonly="state != 'borrador'"/>
+                            <field name="partner_id" readonly="state != 'borrador'"/>
+                        </group>
+                        <group>
+                            <field name="fecha_prestamo" readonly="state != 'borrador'"/>
+                            <field name="fecha_prevista" readonly="state != 'borrador'"/>
+                            <field name="dias_prestamo"/>
+                            <field name="dias_retraso"/>
+                            <field name="fecha_devolucion"/>
+                        </group>
+                    </group>
+                    <field name="notas" placeholder="Notas..."/>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="unicah_prestamo_view_search" model="ir.ui.view">
+        <field name="name">unicah.prestamo.search</field>
+        <field name="model">unicah.prestamo</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="equipo_id"/>
+                <field name="partner_id"/>
+                <filter name="activos" string="Prestados" domain="[('state', '=', 'prestado')]"/>
+                <filter name="atrasados" string="Con retraso"
+                        domain="[('state', '=', 'prestado'), ('fecha_prevista', '&lt;', context_today().strftime('%Y-%m-%d'))]"/>
+                <group>
+                    <filter name="group_equipo" string="Equipo" context="{'group_by': 'equipo_id'}"/>
+                    <filter name="group_estado" string="Estado" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="unicah_prestamo_action" model="ir.actions.act_window">
+        <field name="name">Préstamos</field>
+        <field name="res_model">unicah.prestamo</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="unicah_equipo_view_list" model="ir.ui.view">
+        <field name="name">unicah.equipo.list</field>
+        <field name="model">unicah.equipo</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="codigo"/>
+                <field name="name"/>
+                <field name="categoria"/>
+                <field name="disponible"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="unicah_equipo_view_form" model="ir.ui.view">
+        <field name="name">unicah.equipo.form</field>
+        <field name="model">unicah.equipo</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="codigo"/>
+                        </group>
+                        <group>
+                            <field name="categoria"/>
+                            <field name="disponible"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Historial de préstamos">
+                            <field name="prestamo_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="partner_id"/>
+                                    <field name="fecha_prestamo"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="unicah_equipo_action" model="ir.actions.act_window">
+        <field name="name">Equipos</field>
+        <field name="res_model">unicah.equipo</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

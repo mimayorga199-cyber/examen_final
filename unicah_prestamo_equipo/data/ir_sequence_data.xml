@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="seq_unicah_prestamo" model="ir.sequence">
+        <field name="name">Préstamo de equipo</field>
+        <field name="code">unicah.prestamo</field>
+        <field name="prefix">PRE/</field>
+        <field name="padding">4</field>
+    </record>
+</odoo>
